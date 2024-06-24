@@ -1,0 +1,4 @@
+#!/bin/bash
+
+docker build --tag 'mf_ubuntu' -f Dockerfile_ubuntu .
+docker run -it -h ubuntu mf_ubuntu

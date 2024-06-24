@@ -1,0 +1,4 @@
+#!/bin/bash
+
+docker build --tag 'mf_rhel' -f Dockerfile_rhel .
+docker run -it -h rhel mf_rhel

@@ -1,0 +1,7 @@
+
+FROM ubuntu
+# WORKDIR /app
+# COPY . .
+# RUN yum -y install man-db
+# RUN mandb
+RUN cd /
