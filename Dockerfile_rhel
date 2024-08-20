@@ -2,6 +2,14 @@
 FROM redhat/ubi8
 # WORKDIR /app
 # COPY . .
+# Add a user/file/group to play around with permissions
+RUN adduser mf
+RUN groupadd family
+RUN usermod -aG family mf
+RUN touch my_file.txt
+RUN chgrp family my_file.txt
+RUN chown mf my_file.txt
+
 RUN yum -y install man-db
 RUN mandb
 RUN cd /

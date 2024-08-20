@@ -4,4 +4,33 @@ FROM ubuntu
 # COPY . .
 # RUN yum -y install man-db
 # RUN mandb
+# Add a user/file/group to play around with permissions
+RUN apt update
+RUN apt-get update
+RUN apt -y install systemd
+RUN apt -y install man-db
+RUN apt install nano
+RUN apt install bash-completion
+RUN yes | unminimize
+RUN apt -y install less
+RUN apt -y install vim
+# add new packages below these lines
+RUN apt -y install zip
+RUN apt -y install git
+
+RUN useradd mf
+RUN groupadd family
+RUN groupadd family2
+RUN usermod -aG family mf
+RUN usermod -aG family2 mf
+RUN touch my_file.txt
+RUN chgrp family my_file.txt
+RUN chown mf my_file.txt
+
+COPY auto_complete.txt auto_complete.txt
+COPY file1 file1
+COPY file2 file2
+RUN chown mf /auto_complete.txt
+RUN cat /auto_complete.txt >> ~/.bashrc
+
 RUN cd /
