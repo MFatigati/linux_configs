@@ -7,6 +7,7 @@ FROM ubuntu
 # Add a user/file/group to play around with permissions
 RUN apt update
 RUN apt-get update
+RUN apt -y install sudo 
 
 # Make manuals available
 RUN apt -y install man-db
@@ -16,24 +17,23 @@ RUN yes | unminimize
 # Docker
 
 # Add Docker's official GPG key:
-RUN sudo apt-get update
-RUN sudo apt-get install ca-certificates curl
-RUN sudo install -m 0755 -d /etc/apt/keyrings
-RUN sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-RUN sudo chmod a+r /etc/apt/keyrings/docker.asc
+# RUN sudo apt-get -y install ca-certificates curl
+# RUN sudo install -m 0755 -d /etc/apt/keyrings
+# RUN sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+# RUN sudo chmod a+r /etc/apt/keyrings/docker.asc
   
 # Add the repository to Apt sources:
-RUN echo \
-    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-    $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-    sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-RUN sudo apt-get update
+# RUN echo \
+#     "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+#     $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+#     sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+# RUN sudo apt-get update
 
 # Install Docker packages:
-RUN yes | sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+# RUN yes | sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 # Virtualization
-RUN apt -y install qemu-kvm libvirt-daemon-system virt-manager libvirt-clients virtinst bridge-utils
+# RUN apt -y install qemu-kvm libvirt-daemon-system virt-manager libvirt-clients virtinst bridge-utils
 # wget https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-arm64.img
 # wget https://cloud-images.ubuntu.com/noble/current/SHA256SUMS.gpg
 # wget https://cloud-images.ubuntu.com/noble/current/SHA256SUMS
@@ -53,9 +53,10 @@ RUN apt -y install git
 RUN apt -y install cron
 RUN apt -y install anacron
 RUN apt -y install at
-RUN apt -y install sudo 
 RUN apt install wget
-
+RUN apt install -y iproute2
+RUN apt -y install netplan.io
+RUN apt -y install ufw
 # Add new installs here
 
 RUN useradd mf
@@ -72,5 +73,9 @@ COPY file1 file1
 COPY file2 file2
 RUN chown mf /auto_complete.txt
 RUN cat /auto_complete.txt >> ~/.bashrc
-
+# Copy script to enable UFW
+COPY setup-ufw.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/setup-ufw.sh
 RUN cd /
+
+CMD ["bash", "/usr/local/bin/setup-ufw.sh"]
