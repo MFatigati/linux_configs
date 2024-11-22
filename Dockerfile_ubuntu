@@ -74,8 +74,8 @@ COPY file2 file2
 RUN chown mf /auto_complete.txt
 RUN cat /auto_complete.txt >> ~/.bashrc
 # Copy script to enable UFW
-COPY setup-ufw.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/setup-ufw.sh
+COPY setup-script.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/setup-script.sh
 RUN cd /
 
-CMD ["bash", "/usr/local/bin/setup-ufw.sh"]
+CMD ["bash", "/usr/local/bin/setup-script.sh"]
